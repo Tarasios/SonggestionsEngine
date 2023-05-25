@@ -82,7 +82,7 @@ def get_song_recommendations(index, song_id, data):
     song_id = pad_sequences(song_id, maxlen=max_length)
     _, song_indices = index(song_id)
     top_song_index = song_indices[0, 0]  # Get the index of the top recommended song
-    song_title = data.iloc[top_song_index]['Track']  # Retrieve the song title from the data
+    song_id = data.iloc[top_song_index]['id']  # Retrieve the song ID from the data
     uri_series = data.iloc[top_song_index]['Uri']  # Retrieve the Uri series from the data
 
     spotify_links = []
@@ -92,7 +92,8 @@ def get_song_recommendations(index, song_id, data):
         spotify_link = f"https://open.spotify.com/track/{track_id}"
         spotify_links.append(spotify_link)
 
-    return song_title, spotify_links
+    return song_id, spotify_links
+
 
 # Main function to run the program
 def main():
