@@ -5,7 +5,7 @@ import pandas as pd
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-vocab_size = 10000  # Define the vocabulary size
+vocab_size = 60000  # Define the vocabulary size
 embedding_dim = 100  # Define the embedding dimension
 max_length = 1  # Define the maximum length of input sequences
 num_classes = 10  # Define the number of classes
@@ -78,21 +78,18 @@ def setup_retrieval_model(model, songs):
 
 # Function to get song recommendations
 def get_song_recommendations(index, song_id, data):
-    song_id = [[song_id]]  # Wrap the song_id in a list to create a list of sequences
-    song_id = pad_sequences(song_id, maxlen=max_length)
-    _, song_indices = index(song_id)
-    top_song_index = song_indices[0, 0]  # Get the index of the top recommended song
-    song_id = data.iloc[top_song_index]['id']  # Retrieve the song ID from the data
-    uri_series = data.iloc[top_song_index]['Uri']  # Retrieve the Uri series from the data
+    song_id_input = [[song_id]]
+    song_id_input = pad_sequences(song_id_input, maxlen=max_length)
+    _, song_indices = index(song_id_input)
+    top_song_index = song_indices[0, 0]
+    recommended_song_id = int(data.iloc[top_song_index]['id'])  # Convert to integer
+    if song_id == recommended_song_id:
+        top_song_index = song_indices[0, 1]
+        recommended_song_id = int(data.iloc[top_song_index]['id'])
 
-    spotify_links = []
-    for uri in uri_series:
-        uri_parts = uri.split(":")
-        track_id = uri_parts[-1]
-        spotify_link = f"https://open.spotify.com/track/{track_id}"
-        spotify_links.append(spotify_link)
+    return recommended_song_id
 
-    return song_id, spotify_links
+
 
 
 # Main function to run the program
@@ -103,7 +100,6 @@ def main():
     task = define_task(songs, song_model)
     model = create_retrieval_model(song_model, task)
     index = setup_retrieval_model(model, songs)
-    # Load the data into the 'data' DataFrame
     data = pd.read_csv('Untrimmeddata.csv')
     try:
         saved_model = tf.keras.models.load_model('content_based_model.h5')
@@ -111,9 +107,9 @@ def main():
         print(f"Failed to load the model: {e}")
         return
 
-    song_id = 9126  # Enter the song ID for which you want recommendations
-    recommendations, urls = get_song_recommendations(index, song_id, data)  # Pass 'data' to the function
-    track = data[data['id'] == song_id]['Track'].values[0]  # Retrieve the associated track
+    song_id = 9126
+    recommendations, urls = get_song_recommendations(index, song_id, data)
+    track = data[data['id'] == song_id]['Track'].values[0]
     print("Recommended songs for", track, ":")
     for recommendation, url in zip(recommendations, urls):
         print(recommendation)
