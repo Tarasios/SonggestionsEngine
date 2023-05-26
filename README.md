@@ -17,7 +17,7 @@ This repository contains the code for Songgestions, a web application that uses 
 ## Installation and Setup
 To set up the development environment for Songgestions, follow these steps:
 
-1. Clone this GitHub repository: git clone https://github.com/your-username/Songgestions.git
+1. Clone this GitHub repository: git clone https://github.com/Tarasios/Songgestions.git
 2. Navigate to the project folder: cd Songgestions
 3. Set up a Python environment (e.g., using virtualenv or conda).
 4. Install the required dependencies: pip install -r requirements.txt
