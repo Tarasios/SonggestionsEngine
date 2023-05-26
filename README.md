@@ -17,6 +17,7 @@ This repository contains the code for Songgestions, a web application that uses 
 ## Installation and Setup
 To set up the development environment for Songgestions, follow these steps:
 
+0. You will need a Python IDE which is compatible with flask, tensorflow, and pandas.
 1. Clone this GitHub repository: git clone https://github.com/Tarasios/Songgestions.git
 2. Navigate to the project folder: cd Songgestions
 3. Set up a Python environment (e.g., using virtualenv or conda).
@@ -38,8 +39,9 @@ To use Songgestions:
 ## AI Usage
 In Songgestions, we utilized Machine Learning to power our song recommendation system. Here's how AI was used:
 
-* We built our own TensorFlow model for song recommendations using the provided Kaggle dataset.
 * ChatGPT, an AI language model, assisted us in creating a roadmap for our project and guiding us through certain decision points.
+* We built our own TensorFlow model for song recommendations using a Kaggle dataset.
+* AI was not used, however, in the creation of the dataset. Only in using it.
 * As the web server hosting limitations prevent us from running the Python API server-side, the TensorFlow model needs to be downloaded and run client-side.
 
 ## Contact Information
